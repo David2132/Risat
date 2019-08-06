@@ -128,7 +128,7 @@ class DummyData {
                     
             }
         ],
-        industries: {}
+        industries: []
     };
 }
 

@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.Clickable {
+  color:blue;
+  cursor:pointer;
+}
+#dataTable tbody >tr:hover {
+  background-color: #c0c0c0
+
+
+}
+thead {
+  background-color:#008080
+}
+#margin{
+  padding-left: 10%
+}
