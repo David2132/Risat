@@ -137,7 +137,6 @@ class Info extends React.Component {
         if (employee.manager !== undefined) {
             manager = employee.manager.name
         }
-        console.log(this.state.emp)
         return (
             <div id='resource' >
                 <Table style={{ textAlign: 'center', width: '80%' }}>
