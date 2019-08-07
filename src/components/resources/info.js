@@ -7,7 +7,7 @@ import Employee from './employee/employee'
 import Industry from './industries/industries'
 import Certification from './certifications/certifications'
 
-class Resource extends React.Component {
+class Info extends React.Component {
 
     constructor() {
         super();
@@ -335,4 +335,4 @@ class Resource extends React.Component {
         )
     }
 }
-export default Resource
+export default Info
