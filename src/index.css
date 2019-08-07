@@ -35,7 +35,6 @@ thead {
 }
 /* #resource {
   margin-left:15%;
-<<<<<<< HEAD
 } */
 .Box {
   display:flex;
@@ -78,7 +77,6 @@ thead {
 }
 thead{
   color:black
-=======
 }
 
 input {
@@ -104,5 +102,4 @@ label {
 .select-wrapper {
   width: 260px;
   display: inline-block;
->>>>>>> ba5b4a4d5813de2e492259297a9c0750e57b028c
 }

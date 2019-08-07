@@ -12,13 +12,9 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-<<<<<<< HEAD
     "reactstrap": "^8.0.1",
-    "router-link": "0.0.4"
-=======
-    "react-select": "^3.0.4",
-    "reactstrap": "^8.0.1"
->>>>>>> ba5b4a4d5813de2e492259297a9c0750e57b028c
+    "router-link": "0.0.4",
+    "react-select": "^3.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
