@@ -36,3 +36,28 @@ thead {
 #resource {
   margin-left:15%;
 }
+
+input {
+  padding: 6px 6px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #cfcfcf;
+  margin: 8px;
+  width: 260px;
+}
+
+input::placeholder {
+  font-size: 1.2em;
+  font-weight: lighter;
+  color: #999;
+}
+
+label {
+  margin: 8px;
+  width: 20%;
+}
+
+.select-wrapper {
+  width: 260px;
+  display: inline-block;
+}
