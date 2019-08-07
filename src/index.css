@@ -27,3 +27,12 @@ thead {
 #margin{
   padding-left: 10%
 }
+.modal-header {
+  background-color: #008080
+}
+#dataTable {
+  width:80%;
+}
+#resource {
+  margin-left:15%;
+}

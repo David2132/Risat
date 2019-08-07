@@ -82,7 +82,54 @@ class DummyData {
                 "value":"07/25/2019",
                 "status":"APPROVED",
                 "count":0
-            }
+            },
+            {
+                "employee":{
+                    "serialNo":"3J1641",
+                    "hrBand":"TE",
+                    "availability":"Dec 31, 2019",
+                    "daysInBench":"NO BENCH",
+                    "ytdChgUtil":0,
+                    "manager":{
+                        "id":88,
+                        "name":"Jeffrey Smith",
+                        "count":0
+                    },
+                    "serviceLine":{
+                        "id":1,
+                        "name":"CAI-DIG",
+                        "count":0
+                    },
+                    "gdCenter":{
+                        "id":1,
+                        "name":"Baton Rouge",
+                        "count":0
+                    },
+                    "children":{
+                    },
+                    "employees":{
+                    },
+                    "staffingReviewer":false,
+                    "id":556,
+                    "name":"David Duong",
+                    "status":"90+ Days",
+                    "count":0
+                },
+                "skill":{
+                    "category":{
+                        "id":13,
+                        "name":"Programming Languages",
+                        "count":0
+                    },
+                    "id":204,
+                    "name":"React",
+                    "count":0},
+                    "level":"TRAINED",
+                    "years":0.0,
+                    "value":"07/25/2019",
+                    "status":"NOT APPROVED",
+                    "count":0
+                }
         ],
         certifications: [
             {
@@ -128,7 +175,45 @@ class DummyData {
                     
             }
         ],
-        industries: []
+        "industries":[{
+            "employee":
+            {
+                "serialNo":"3J1641",
+            "hrBand":"TE",
+            "availability":"Dec 31, 2019",
+            "daysInBench":"NO BENCH",
+            "ytdChgUtil":0.0,
+            "manager":
+            {
+                "id":88,
+                "name":"Jeffrey Smith",
+                "count":0
+            },
+            "serviceLine":{
+                "id":1,
+                "name":"CAI-DIG",
+                "count":0},
+                "gdCenter":{
+                    "id":1,
+                    "name":"Baton Rouge",
+                    "count":0
+                },
+                "children":[],
+                "employees":[],
+                "staffingReviewer":false,
+                "id":556,
+                "name":"David Duong",
+                "status":"90+ Days",
+                "count":0
+            },
+            "industry":{
+                "id":5,
+                "name":"Advertising",
+                "count":0
+            },
+            "years":1.0,
+            "value":"08/07/2019",
+            "count":0}]
     };
 }
 

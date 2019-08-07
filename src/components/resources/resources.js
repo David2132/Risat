@@ -1,11 +1,13 @@
 import React from 'react'
 import Service from '../../dataService'
 import { Table } from 'reactstrap'
+import Skill from './skills/skills'
+import { Modal } from 'reactstrap'
+import Employee from './employee/employee'
+import Industry from './industries/industries'
+import Certification from './certifications/certifications'
 
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
-
-
-class resource extends React.Component {
+class Resource extends React.Component {
 
     constructor() {
         super();
@@ -14,6 +16,11 @@ class resource extends React.Component {
             updateSkill: false,
             updateIndustry: false,
             updateCertification: false,
+
+            skill: null,
+            certification: null,
+            industry: null,
+
             emp: {
                 certifications: [],
                 employee: {},
@@ -50,24 +57,47 @@ class resource extends React.Component {
     }
     skillUpdate(skill) {
         const updateSkill = true;
-
-        this.setState({
-            updateSkill
-        });
+        if (skill === null) {
+            this.setState({
+                updateSkill
+            });
+        }
+        else {
+            this.setState({
+                updateSkill,
+                skill
+            })
+        }
     }
-    indUpdate(ind) {
+    indUpdate(industry) {
         const updateIndustry = true;
 
-        this.setState({
-            updateIndustry
-        });
+        if (industry === null) {
+            this.setState({
+                updateIndustry
+            });
+        }
+        else {
+            this.setState({
+                updateIndustry,
+                industry
+            })
+        }
     }
-    certUpdate(cert) {
+    certUpdate(certification) {
         const updateCertification = true;
 
-        this.setState({
-            updateCertification
-        });
+        if (certification === null) {
+            this.setState({
+                updateCertification
+            });
+        }
+        else {
+            this.setState({
+                updateCertification,
+                certification
+            })
+        }
     }
     toggle() {
         if (this.state.updateEmp) {
@@ -103,14 +133,14 @@ class resource extends React.Component {
     render() {
         var manager = '';
 
-        const { skills, certifications, industries, employee, employees } = this.state.emp
+        const { skills, certifications, industries, employee } = this.state.emp
         if (employee.manager !== undefined) {
             manager = employee.manager.name
         }
         console.log(this.state.emp)
         return (
             <div id='resource' >
-                <Table style={{ width: '80%', textAlign: 'center' }}>
+                <Table style={{ textAlign: 'center', width: '80%' }}>
                     <tbody>
                         <tr>
                             <td>
@@ -150,7 +180,7 @@ class resource extends React.Component {
                         Skills <span className='Clickable' onClick={this.skillUpdate}>+</span>
                     </div>
 
-                    <Table id='dataTable' style={{ width: '80%' }}>
+                    <Table id='dataTable' >
                         <thead style={{ fontWeight: 'bold' }}>
                             <tr>
                                 <td>
@@ -170,11 +200,19 @@ class resource extends React.Component {
                         <tbody>
                             {skills.map(skill => (
                                 <tr key={skill.skill.id}>
-                                    <td>
-                                        <span className='Clickable' onClick={()=>this.skillUpdate(skill)}>
-                                            {skill.skill.name}
-                                        </span>
-                                    </td>
+                                    {skill.status === 'NOT APPROVED' ?
+                                        <td >
+                                            <span title='Manager needs to approve skill!' className='Clickable' onClick={() => this.skillUpdate(skill)}>
+                                                <b style={{ color: 'red' }}>*</b>{skill.skill.name}
+                                            </span>
+                                        </td> :
+                                        <td>
+                                            <span className='Clickable' onClick={() => this.skillUpdate(skill)}>
+                                                {skill.skill.name}
+                                            </span>
+                                        </td>
+
+                                    }
                                     <td>
                                         {skill.level}
                                     </td>
@@ -185,6 +223,7 @@ class resource extends React.Component {
                                         {skill.value}
                                     </td>
                                 </tr>
+
                             )
                             )
                             }
@@ -197,7 +236,7 @@ class resource extends React.Component {
                         Certifications / Badges <span className='Clickable' onClick={this.certUpdate}>+</span>
                     </div>
 
-                    <Table id='dataTable' style={{ width: '80%' }}>
+                    <Table id='dataTable' >
                         <thead style={{ fontWeight: 'bold' }}>
                             <tr>
                                 <td>
@@ -218,7 +257,7 @@ class resource extends React.Component {
                             {certifications.map(certification => (
                                 <tr key={certification.certBadge.id}>
                                     <td>
-                                        <span className='Clickable'  onClick={()=>this.certUpdate(certification)}>
+                                        <span className='Clickable' onClick={() => this.certUpdate(certification)}>
                                             {certification.certBadge.name}
                                         </span>
                                     </td>
@@ -243,7 +282,7 @@ class resource extends React.Component {
                         Industries <span className='Clickable' onClick={this.indUpdate}>+</span>
                     </div>
 
-                    <Table id='dataTable' style={{ width: '80%' }}>
+                    <Table id='dataTable' >
                         <thead style={{ fontWeight: 'bold' }}>
                             <tr>
                                 <td>
@@ -256,16 +295,16 @@ class resource extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {industries.map(skill => (
-                                <tr key={skill.skill.id}>
+                            {industries.map(industry => (
+                                <tr key={industry.industry.id}>
                                     <td>
-                                        <span className='Clickable'  onClick={()=>this.indUpdate(skill)}>
-                                            {skill.skill.name}
+                                        <span className='Clickable' onClick={() => this.indUpdate(industry)}>
+                                            {industry.industry.name}
                                         </span>
                                     </td>
 
                                     <td>
-                                        {skill.years}
+                                        {industry.years}
                                     </td>
 
                                 </tr>
@@ -277,48 +316,18 @@ class resource extends React.Component {
                 </span>
 
                 <Modal isOpen={this.state.updateEmp} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Update Employee: {employee.name}</ModalHeader>
-                    <ModalBody>
-                    </ModalBody>
-                    <ModalFooter>
-
-                        <Button color="primary">Save</Button>
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter>
+                    <Employee employee={employee} toggle={this.toggle} />
                 </Modal>
 
                 <Modal isOpen={this.state.updateCertification} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Certifations/Badges: </ModalHeader>
-                    <ModalBody>
-                    </ModalBody>
-                    <ModalFooter>
-
-                        <Button color="primary">Save</Button>
-                        <Button color="danger"> Delete</Button>
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter>
+                    <Certification certification = {this.state.certification} toggle={this.toggle} />
                 </Modal>
                 <Modal isOpen={this.state.updateSkill} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Skills: </ModalHeader>
-                    <ModalBody>
-                    </ModalBody>
-                    <ModalFooter>
-
-                        <Button color="primary">Save</Button>
-                        <Button color="danger"> Delete</Button>
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter>
+                    <Skill skill = {this.state.skill} toggle={this.toggle} />
                 </Modal>
 
                 <Modal isOpen={this.state.updateIndustry} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Industries: </ModalHeader>
-                    <ModalBody>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary">Save</Button>
-                        <Button color="danger"> Delete</Button>
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                    </ModalFooter>
+                    <Industry industry = {this.state.industry} toggle={this.toggle} />
                 </Modal>
 
 
@@ -326,4 +335,4 @@ class resource extends React.Component {
         )
     }
 }
-export default resource
+export default Resource
