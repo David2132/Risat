@@ -31,8 +31,50 @@ thead {
   background-color: #008080
 }
 #dataTable {
-  width:80%;
+  width:100%;
 }
-#resource {
+/* #resource {
   margin-left:15%;
+} */
+.Box {
+  display:flex;
+}
+
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+.dash{
+  cursor: pointer;
+}
+.employee:hover{
+  background-color:#c0c0c0;
+  padding:5pt;
+
+}
+.employee {
+  cursor: pointer;
+  padding:5pt
+}
+thead{
+  color:black
 }
