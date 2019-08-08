@@ -1,8 +1,4 @@
 import React from 'react'
-<<<<<<< HEAD
-=======
-import dataService from '../../dataService'
->>>>>>> 3c74412e639159461abbc5cd5f6411b09a12a467
 import { Table } from 'reactstrap'
 import Skill from './skills/skills'
 import { Modal } from 'reactstrap'
@@ -42,13 +38,6 @@ class Info extends React.Component {
         this.updateState = this.updateState.bind(this);
     }
     componentDidMount() {
-<<<<<<< HEAD
-        
-=======
-        // dataService.getEmp().then(resp => {
-        //    console.log(resp)
-        // });
->>>>>>> 3c74412e639159461abbc5cd5f6411b09a12a467
         const emp = this.props.employee
         this.setState({
             emp
