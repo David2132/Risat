@@ -1,6 +1,6 @@
 import React from 'react'
 import Info from './info'
-import Service from '../../dataService'
+import dataService from '../../dataService'
 import { Button } from 'reactstrap'
 import Dashboard from '../dashboard'
 class Resource extends React.Component {
@@ -12,10 +12,10 @@ class Resource extends React.Component {
         }
     }
     componentDidMount() {
-        // Service.getEmp().then(resp => {
+        // dataService.getEmp().then(resp => {
         //    console.log(resp)
         // });
-        const emp = Service.getEmp();
+        const emp = dataService.getEmp();
         const loading = false;
         this.setState({
             emp,
@@ -28,7 +28,6 @@ class Resource extends React.Component {
         if (this.state.loading) {
             return <div>hello</div>
         }
-        console.log(employees)
         return (
             <div>
                 <Dashboard />

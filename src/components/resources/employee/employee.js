@@ -2,6 +2,7 @@ import React from 'react'
 import { ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
+import dataService from './../../../dataService';
 
 import './../../../index.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -18,13 +19,13 @@ class Employee extends React.Component {
             gdCenter: {},
             serviceLine: {},
             availability: new Date(),
-            hire: new Date(),
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount(){
         const employee = this.props.employee;
-        console.log(employee);
+        console.log(this.props.employee)
         if(employee)
             this.setState({
                 name: employee.name,
@@ -35,7 +36,6 @@ class Employee extends React.Component {
                 gdCenter: employee.gdCenter,
                 serviceLine: employee.serviceLine,
                 availability: new Date(employee.availability),
-                // hire: new Date(),
             })
     }
 
@@ -46,12 +46,31 @@ class Employee extends React.Component {
         })
     }
 
+    // we store locally then prepare a submit object with the corresponding new data
+    handleSubmit(e) {
+        e.preventDefault();
+        
+        let submit = this.props.employee;
+        submit.name = this.state.name;
+        submit.email = this.state.email;
+        submit.serialNo = this.state.serialNo;
+        submit.hrBand = this.state.hrBand;
+        submit.manager = this.state.manager;
+        submit.gdCenter = this.state.gdCenter;
+        submit.serviceLine = this.state.serviceLine;
+        submit.availability = (this.state.availability.getMonth() + 1) + '/' + this.state.availability.getDate() + '/' + this.state.availability.getFullYear();
+        
+        dataService.editEmployee(submit);
+        
+        this.props.toggle();
+    }
+
     render() {
         return (
             <div>
-                <ModalHeader toggle={this.props.toggle} > Update Employee: {this.state.name}</ModalHeader >
-                <ModalBody>
-                    <form>
+                <form onSubmit={this.handleSubmit}>
+                    <ModalHeader toggle={this.props.toggle} > Update Employee: {this.state.name}</ModalHeader >
+                    <ModalBody>
                         <label htmlFor="name"><b>Name </b></label> 
                         <input
                             id="name"
@@ -96,7 +115,7 @@ class Employee extends React.Component {
                                 value={{value: this.state.manager.id, label: this.state.manager.name}}
                                 placeholder="select a manager"
                                 required
-                                onChange={opt => this.handleChange({target:{id:'manager', value: opt.value}})}
+                                onChange={opt => this.handleChange({target:{id:'manager', value: {id: opt.value, name: opt.label}}})}
                                 options={[
                                     {value: 88, label: "Jefferey Smith"},
                                     {value: 2, label: "two"}
@@ -111,7 +130,7 @@ class Employee extends React.Component {
                                 value={{value: this.state.gdCenter.id, label: this.state.gdCenter.name}}
                                 placeholder="select a GD Center"
                                 required 
-                                onChange={opt => this.handleChange({target:{id:'gdCenter', value: opt.value}})}
+                                onChange={opt => this.handleChange({target:{id:'gdCenter', value: {id: opt.value, name: opt.label}}})}
                                 options={[
                                     {value: 1, label: "Baton Rouge"},
                                     {value: 2, label: "two"}
@@ -126,7 +145,7 @@ class Employee extends React.Component {
                                 value={{value: this.state.serviceLine.id, label: this.state.serviceLine.name}}
                                 placeholder="select a service line"
                                 required
-                                onChange={opt => this.handleChange({target:{id:'serviceLine', value: opt.value}})}
+                                onChange={opt => this.handleChange({target:{id:'serviceLine', value: {id: opt.value, name: opt.label}}})}
                                 options={[
                                     {value: 1, label: "CAI-DIG"},
                                     {value: 2, label: "two"}
@@ -139,24 +158,14 @@ class Employee extends React.Component {
                             id="availability"
                             value={this.state.availability}
                             selected={this.state.availability}
-                            onChange={this.handleChange}
+                            onChange={date => this.handleChange({target: {id:"availability", value: date}})}
                         />
-
-                        <br></br>
-                        <label htmlFor="hire"><b>Hire Date </b></label>
-                        <DatePicker
-                            id="hire"
-                            value={this.state.hire}
-                            selected={this.state.hire}
-                            onChange={this.handleChange}
-                        />
-                    </form>
-                </ModalBody>
-                <ModalFooter>
-
-                    <Button color="primary">Save</Button>
-                    <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
-                </ModalFooter>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" type="submit">Save</Button>
+                        <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+                    </ModalFooter>
+                </form>
             </div>
         )
     }

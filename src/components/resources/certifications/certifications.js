@@ -2,6 +2,7 @@ import React from 'react'
 import { ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
+import dataService from './../../../dataService';
 
 import './../../../index.css';
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,32 +17,68 @@ class Certification extends React.Component {
             endDate: undefined
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount(){
         const certification = this.props.certification;
-        console.log(certification)
         if(certification.certBadge)
             this.setState({
                 isEdit: true,
                 certBadge: certification.certBadge,
                 startDate: new Date(certification.startDate),
             })
+        if(certification.endDate)
+        this.setState({
+            endDate: new Date(certification.endDate),
+        })
     }
 
     handleChange(e) {
-        const {id, value} = e.target
+        const {id, value} = e.target;
         this.setState({
             [id]: value
         })
     }
 
+    // we store locally then prepare a submit object with the corresponding new data
+    handleSubmit(e) {
+        e.preventDefault();
+        const submitDate = new Date();
+        if(this.state.isEdit) {
+            let submit = this.props.certification;
+            submit.certBadge = this.state.certBadge;
+            submit.startDate = (this.state.startDate.getMonth() + 1) + '/' + this.state.startDate.getDate() + '/' + this.state.startDate.getFullYear();
+            if(this.state.endDate)
+                submit.endDate = (this.state.endDate.getMonth() + 1) + '/' + this.state.endDate.getDate() + '/' + this.state.endDate.getFullYear();
+            submit.value = (submitDate.getMonth() + 1) + '/' + submitDate.getDate() + '/' + submitDate.getFullYear();
+            dataService.editCertification(submit);
+        } else {
+            let submit = {
+                count: 0,
+                employee: this.props.employee,
+                certBadge: {
+                    count: 0,
+                    id: this.state.certBadge.id,
+                    name: this.state.certBadge.name
+                },
+                value: (submitDate.getMonth() + 1) + '/' + submitDate.getDate() + '/' + submitDate.getFullYear(),
+                startDate: (this.state.startDate.getMonth() + 1) + '/' + this.state.startDate.getDate() + '/' + this.state.startDate.getFullYear(),
+                endDate: this.state.endDate
+            }
+            if(submit.endDate)
+                submit.endDate = (this.state.endDate.getMonth() + 1) + '/' + this.state.endDate.getDate() + '/' + this.state.endDate.getFullYear();
+            dataService.addCertification(submit);
+        }
+        this.props.toggle();
+    }
+
     render() {
         return (
             <div>
-                <ModalHeader toggle={this.props.toggle} > Certifcations/Badges: </ModalHeader >
-                <ModalBody>
-                    <form>
+                <form onSubmit={this.handleSubmit}>
+                    <ModalHeader toggle={this.props.toggle} > Certifcations/Badges: </ModalHeader >
+                    <ModalBody>
                         <label htmlFor="certBadge"><b>Certification / Badge </b></label> 
                         <div className="select-wrapper">
                             <Select
@@ -50,7 +87,7 @@ class Certification extends React.Component {
                                 value={{value: this.state.certBadge.id, label: this.state.certBadge.name}}
                                 isDisabled={this.state.isEdit}
                                 required
-                                onChange={opt => this.handleChange({target:{id:'certBadge', value: opt.value}})}
+                                onChange={opt => this.handleChange({target:{id:'certBadge', value: {id: opt.value, name: opt.label}}})}
                                 options={[
                                     {value: 1, label: "one"},
                                     {value: 2, label: "two"}
@@ -62,7 +99,7 @@ class Certification extends React.Component {
                         <DatePicker
                             id="startDate"
                             selected={this.state.startDate}
-                            onChange={this.handleChange}
+                            onChange={date => this.handleChange({target: {id:"startDate", value: date}})}
                         />
 
                         <br></br>
@@ -70,16 +107,15 @@ class Certification extends React.Component {
                         <DatePicker
                             id="endDate"
                             selected={this.state.endDate}
-                            onChange={this.handleChange}
+                            onChange={date => this.handleChange({target: {id:"endDate", value: date}})}
                         />
-                    </form>
-                </ModalBody>
-                <ModalFooter>
-
-                    <Button color="primary">Save</Button>
-                    <Button color="danger"> Delete</Button>
-                    <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
-                </ModalFooter>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary">Save</Button>
+                        <Button color="danger"> Delete</Button>
+                        <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+                    </ModalFooter>
+                </form>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 import Dashboard from '../dashboard'
-import Service from '../../dataService'
+import dataService from '../../dataService'
 
 class Home extends React.Component {
     constructor() {
@@ -11,7 +11,7 @@ class Home extends React.Component {
         };
     }
     componentDidMount() {
-        const employee = Service.getEmp().employee;
+        const employee = dataService.getEmp().employee;
         const loading = false;
         this.setState({
             employee,

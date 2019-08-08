@@ -1,5 +1,5 @@
 import React from 'react'
-import Service from '../../dataService'
+import dataService from '../../dataService'
 import { Table } from 'reactstrap'
 import Skill from './skills/skills'
 import { Modal } from 'reactstrap'
@@ -39,10 +39,10 @@ class Info extends React.Component {
 
     }
     componentDidMount() {
-        // Service.getEmp().then(resp => {
+        // dataService.getEmp().then(resp => {
         //    console.log(resp)
         // });
-        const emp = Service.getEmp()
+        const emp = dataService.getEmp()
         this.setState({
             emp
         })
@@ -264,6 +264,7 @@ class Info extends React.Component {
                                         {certification.startDate}
                                     </td>
                                     <td>
+                                        {certification.endDate}
                                     </td>
                                     <td>
                                         {certification.value}
@@ -319,14 +320,14 @@ class Info extends React.Component {
                 </Modal>
 
                 <Modal isOpen={this.state.updateCertification} toggle={this.toggle}>
-                    <Certification certification = {this.state.certification} toggle={this.toggle} />
+                    <Certification employee={employee} certification = {this.state.certification} toggle={this.toggle} />
                 </Modal>
                 <Modal isOpen={this.state.updateSkill} toggle={this.toggle}>
-                    <Skill skill = {this.state.skill} toggle={this.toggle} />
+                    <Skill employee={employee} skill = {this.state.skill} toggle={this.toggle} />
                 </Modal>
 
                 <Modal isOpen={this.state.updateIndustry} toggle={this.toggle}>
-                    <Industry industry = {this.state.industry} toggle={this.toggle} />
+                    <Industry employee={employee} industry = {this.state.industry} toggle={this.toggle} />
                 </Modal>
 
 
