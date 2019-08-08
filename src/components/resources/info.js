@@ -1,5 +1,4 @@
 import React from 'react'
-import Service from '../../dataService'
 import { Table } from 'reactstrap'
 import Skill from './skills/skills'
 import { Modal } from 'reactstrap'
@@ -39,9 +38,7 @@ class Info extends React.Component {
         this.updateState = this.updateState.bind(this);
     }
     componentDidMount() {
-        // Service.getEmp().then(resp => {
-        //    console.log(resp)
-        // });
+        
         const emp = this.props.employee
         this.setState({
             emp
