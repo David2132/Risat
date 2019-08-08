@@ -1,6 +1,7 @@
 import React from 'react'
 import { ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 import Select from 'react-select';
+import dataService from './../../../dataService';
 
 import './../../../index.css';
 
@@ -15,10 +16,10 @@ class Skill extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount(){
         const skill = this.props.skill;
-        console.log(skill)
         if(skill.skill)
             this.setState({
                 isEdit: true,
@@ -35,12 +36,46 @@ class Skill extends React.Component {
         })
     }
 
+    // we store locally then prepare a submit object with the corresponding new data
+    handleSubmit(e) {
+        e.preventDefault();
+        const submitDate = new Date();
+        if(this.state.isEdit) {
+            let submit = this.props.skill;
+            submit.level = this.state.level;
+            submit.years = this.state.years;
+            submit.value = (submitDate.getMonth() + 1) + '/' + submitDate.getDate() + '/' + submitDate.getFullYear();
+            dataService.editSkill(submit);
+        } else {
+            let submit = {
+                count: 0,
+                employee: this.props.employee,
+                level: this.state.level,
+                skill: {
+                    category: {
+                        count: 0,
+                        id: 0,
+                        name: "N/A"
+                    },
+                    count: 0,
+                    id: this.state.skill.id,
+                    name: this.state.skill.name
+                },
+                status: "NOT APPROVED",
+                value: (submitDate.getMonth() + 1) + '/' + submitDate.getDate() + '/' + submitDate.getFullYear(),
+                years: this.state.years
+            }
+            dataService.addSkill(submit);
+        }
+        this.props.toggle();
+    }
+
     render() {
         return (
             <div>
-                <ModalHeader toggle={this.props.toggle} > Skills: </ModalHeader >
-                <ModalBody>
-                    <form>
+                <form onSubmit={this.handleSubmit}>
+                    <ModalHeader toggle={this.props.toggle} > Skills: </ModalHeader >
+                    <ModalBody>
                         <label htmlFor="skill"><b>Skill </b></label>
                         <div className="select-wrapper">
                         <Select
@@ -49,7 +84,7 @@ class Skill extends React.Component {
                             placeholder="select a skill"
                             isDisabled={this.state.isEdit}
                             required
-                            onChange={opt => this.handleChange({target:{id:'skill', value: opt.value}})}
+                            onChange={opt => this.handleChange({target:{id:'skill', value: {id: opt.value, name: opt.label}}})}
                             options={[
                                 {value: 1, label: "one"},
                                 {value: 2, label: "two"}
@@ -81,13 +116,13 @@ class Skill extends React.Component {
                             onChange={this.handleChange}
                             required>
                         </input>
-                    </form>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary">Save</Button>
-                    <Button color="danger"> Delete</Button>
-                    <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
-                </ModalFooter>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button type="submit" color="primary">Save</Button>
+                        <Button color="danger"> Delete</Button>
+                        <Button type="button" color="secondary" onClick={this.props.toggle}>Cancel</Button>
+                    </ModalFooter>
+                </form>
             </div>
         )
     }
