@@ -9,8 +9,8 @@ import Certification from './certifications/certifications'
 
 class Info extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             updateEmp: false,
             updateSkill: false,
@@ -36,17 +36,24 @@ class Info extends React.Component {
         this.indUpdate = this.indUpdate.bind(this);
         this.certUpdate = this.certUpdate.bind(this);
         this.toggle = this.toggle.bind(this);
-
+        this.updateState = this.updateState.bind(this);
     }
     componentDidMount() {
         // dataService.getEmp().then(resp => {
         //    console.log(resp)
         // });
-        const emp = dataService.getEmp()
+        const emp = this.props.employee
         this.setState({
             emp
         })
 
+    }
+    updateState(nextProps){
+        if (nextProps.employee.name !== this.state.emp.employee.name){
+            const emp = this.props.employee
+            this.setState({
+            emp
+        })}
     }
     empUpdate() {
         const updateEmp = true;
@@ -129,17 +136,20 @@ class Info extends React.Component {
 
         }
     }
+   
 
     render() {
+        setTimeout(()=>{this.updateState(this.props.employee)},1)
         var manager = '';
 
         const { skills, certifications, industries, employee } = this.state.emp
         if (employee.manager !== undefined) {
             manager = employee.manager.name
         }
+        
         return (
             <div id='resource' >
-                <Table style={{ textAlign: 'center', width: '80%' }}>
+                <Table style={{ textAlign: 'center' }}>
                     <tbody>
                         <tr>
                             <td>
