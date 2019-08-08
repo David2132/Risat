@@ -8,27 +8,38 @@ class Resource extends React.Component {
         super();
         this.state = {
             emp: {},
-            loading: true
+            loading: true,
+            employee: {}
         }
+        this.changeEmployee = this.changeEmployee.bind(this);
     }
     componentDidMount() {
-        // Service.getEmp().then(resp => {
-        //    console.log(resp)
-        // });
+
         const emp = Service.getEmp();
+        const employee = emp;
         const loading = false;
         this.setState({
             emp,
-            loading
+            loading,
+            employee
         })
 
     }
+    
+    changeEmployee(emp) {
+        const employee = emp;
+        this.setState({
+            ...this.state,
+            employee
+        })
+      
+    }
     render() {
-        const { employees, employee } = this.state.emp
+        const { employee } = this.state.emp;
         if (this.state.loading) {
             return <div>hello</div>
         }
-        console.log(employees)
+        const { employees } = this.state.emp.employee
         return (
             <div>
                 <Dashboard />
@@ -38,27 +49,29 @@ class Resource extends React.Component {
                         <div style={{
                             width: '80%',
                             padding: '5pt 0pt 5pt 20%',
-                            margin: '10pt',
+                            margin: '5pt',
                             fontWeight: 'bold'
-                        }}>  <span className='employee'>
+                        }}>  <span className='employee' onClick={() => this.changeEmployee(this.state.emp)}>
                                 {employee.name}
-                            </span></div>
+                            </span>
 
+                        </div>
 
+                        {employees.map(emp => (
+                            <div key={emp.employee.id} style={{
+
+                                padding: '0pt 0pt 0pt 30%',
+                                margin: '5pt',
+                            }}>
+                                <span style={{ cursor: 'pointer' }} onClick={() => this.changeEmployee(emp)}>
+                                    {emp.employee.name}
+                                </span>
+                            </div>
+                        ))}
                     </span>
-                    {/* {employees.map(employee => (
-                   <div style={{
-                        width:'80%', 
-                        padding:'5pt 0pt 5pt 20%' ,
-                        margin:'10pt', 
-                        backgroundColor:'#008080',
-                        cursor:'pointer',
-                        fontWeight:'bold'
-                        }}>
-                    </div>
-                ))} */}
+
                     <span style={{ width: '75%' }}>
-                        <Info />
+                        <Info employee={this.state.employee} />
                     </span>
 
                 </div>
