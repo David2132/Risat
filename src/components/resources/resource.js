@@ -1,6 +1,6 @@
 import React from 'react'
 import Info from './info'
-import Service from '../../dataService'
+import dataService from '../../dataService'
 import { Button } from 'reactstrap'
 import Dashboard from '../dashboard'
 class Resource extends React.Component {
@@ -15,7 +15,7 @@ class Resource extends React.Component {
     }
     componentDidMount() {
 
-        const emp = Service.getEmp();
+        const emp = dataService.getEmp();
         const employee = emp;
         const loading = false;
         this.setState({

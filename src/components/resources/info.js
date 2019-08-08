@@ -1,4 +1,8 @@
 import React from 'react'
+<<<<<<< HEAD
+=======
+import dataService from '../../dataService'
+>>>>>>> 3c74412e639159461abbc5cd5f6411b09a12a467
 import { Table } from 'reactstrap'
 import Skill from './skills/skills'
 import { Modal } from 'reactstrap'
@@ -38,7 +42,13 @@ class Info extends React.Component {
         this.updateState = this.updateState.bind(this);
     }
     componentDidMount() {
+<<<<<<< HEAD
         
+=======
+        // dataService.getEmp().then(resp => {
+        //    console.log(resp)
+        // });
+>>>>>>> 3c74412e639159461abbc5cd5f6411b09a12a467
         const emp = this.props.employee
         this.setState({
             emp
@@ -271,6 +281,7 @@ class Info extends React.Component {
                                         {certification.startDate}
                                     </td>
                                     <td>
+                                        {certification.endDate}
                                     </td>
                                     <td>
                                         {certification.value}
@@ -326,14 +337,14 @@ class Info extends React.Component {
                 </Modal>
 
                 <Modal isOpen={this.state.updateCertification} toggle={this.toggle}>
-                    <Certification certification = {this.state.certification} toggle={this.toggle} />
+                    <Certification employee={employee} certification = {this.state.certification} toggle={this.toggle} />
                 </Modal>
                 <Modal isOpen={this.state.updateSkill} toggle={this.toggle}>
-                    <Skill skill = {this.state.skill} toggle={this.toggle} />
+                    <Skill employee={employee} skill = {this.state.skill} toggle={this.toggle} />
                 </Modal>
 
                 <Modal isOpen={this.state.updateIndustry} toggle={this.toggle}>
-                    <Industry industry = {this.state.industry} toggle={this.toggle} />
+                    <Industry employee={employee} industry = {this.state.industry} toggle={this.toggle} />
                 </Modal>
 
 
