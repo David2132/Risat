@@ -7,39 +7,62 @@ class dataService {
 
     addCertification(certBadge){
         // find employee by id and append a industry to their industry array
-        DummyData.employee.certifications.push(certBadge);
+        // could use reccursion here should we need to worry about a find id not being available and it all being local
+        if(DummyData.employee.employee.id === certBadge.employee.id) {
+            DummyData.employee.certifications.push(certBadge);
+        }
+        else {
+            for(let target of DummyData.employee.employee.employees) {
+                if(target.employee.id === certBadge.employee.id) {
+                    target.certifications.push(certBadge);
+                }
+            }
+        }
     }
 
     editCertification(toReplace) {
         // find employee by id and then replace a skill at the corresponding id
-        const editIndex = DummyData.employee.certifications.findIndex(certBadge => certBadge.certBadge.id === toReplace.certBadge.id);
-        DummyData.employee.certifications[editIndex] = toReplace;
     }
 
     editEmployee(toReplace) {
-        DummyData.employee = toReplace;
     }
 
     addSkill(skill){
-        // find employee by id and append a skill to their skill array
-        DummyData.employee.skills.push(skill);
+        // find employee by id and append a industry to their industry array
+        // could use reccursion here should we need to worry about a find id not being available and it all being local
+        if(DummyData.employee.employee.id === skill.employee.id) {
+            DummyData.employee.skills.push(skill);
+        }
+        else {
+            for(let target of DummyData.employee.employee.employees) {
+                if(target.employee.id === skill.employee.id) {
+                    target.skills.push(skill);
+                }
+            }
+        }
     }
 
     editSkill(toReplace) {
         // find employee by id and then replace a skill at the corresponding id
-        const editIndex = DummyData.employee.skills.findIndex(skill => skill.skill.id === toReplace.skill.id);
-        DummyData.employee.skills[editIndex] = toReplace;
     }
 
     addIndustry(industry){
         // find employee by id and append a industry to their industry array
-        DummyData.employee.industries.push(industry);
+        // could use reccursion here should we need to worry about a find id not being available and it all being local
+        if(DummyData.employee.employee.id === industry.employee.id) {
+            DummyData.employee.industries.push(industry);
+        }
+        else {
+            for(let target of DummyData.employee.employee.employees) {
+                if(target.employee.id === industry.employee.id) {
+                    target.industries.push(industry);
+                }
+            }
+        }
     }
 
     editIndustry(toReplace) {
         // find employee by id and then replace a skill at the corresponding id
-        const editIndex = DummyData.employee.industries.findIndex(industry => industry.industry.id === toReplace.industry.id);
-        DummyData.employee.industries[editIndex] = toReplace;
     }
 }
 export default new dataService()
