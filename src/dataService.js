@@ -5,6 +5,15 @@ class dataService {
         return DummyData.employee;
     }
 
+    updateSkillApprovals(approveList, declineList) {
+        approveList.forEach(approval => {
+            DummyData.employee.employee.employees[approval.empIndex].skills[approval.skillIndex].status = "APPROVED";
+        })
+        declineList.forEach(approval => {
+            DummyData.employee.employee.employees[approval.empIndex].skills[approval.skillIndex].status = "DECLINED";
+        })
+    }
+
     addCertification(certBadge){
         // find employee by id and append a industry to their industry array
         // could use reccursion here should we need to worry about a find id not being available and it all being local
