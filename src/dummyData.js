@@ -60,7 +60,7 @@ class DummyData {
                         "staffingReviewer":false,
                         "id":226,
                         "name":"Trenton Serpas",
-                        "status":"90+ Days",
+                        "status":"60 Days",
                         "count":0
                     },
                     employees: {},
@@ -492,7 +492,7 @@ class DummyData {
                         "staffingReviewer":false,
                         "id":556,
                         "name":"Andrew Reyes",
-                        "status":"90+ Days",
+                        "status":"30 Days",
                         "count":0
                     },
                     employees: {},
