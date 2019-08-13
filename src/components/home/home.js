@@ -131,7 +131,7 @@ class Home extends React.Component {
                     {Object.values(this.state.bandPieData).map(({title, value, color}, index) => <b key={index} style={{color:color}}>{title} </b>)}
                 </label>
                 
-                <h4 style = {{width:'100%', padding:'200px 5% 0 5%'}}>
+                <h4 style = {{width:'100%', padding:'200px 2.5% 0 2.5%'}}>
                     Pending Approvals
                 </h4>
                 <Table id='dataTable' style={{width:'90%'}}>
