@@ -5,6 +5,15 @@ class dataService {
         return DummyData.employee;
     }
 
+    updateSkillApprovals(approveList, declineList) {
+        approveList.forEach(approval => {
+            DummyData.employee.employee.employees[approval.empIndex].skills[approval.skillIndex].status = "APPROVED";
+        })
+        declineList.forEach(approval => {
+            DummyData.employee.employee.employees[approval.empIndex].skills[approval.skillIndex].status = "DECLINED";
+        })
+    }
+    
     getAvailabilityCount() {
         let Availability = {};
         // we assume our primary employee is only manager atm

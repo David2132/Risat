@@ -1,8 +1,8 @@
 import React from 'react'
 import Dashboard from '../dashboard'
 import dataService from '../../dataService'
+import { Table, Button, Modal } from 'reactstrap'
 import PieChart from 'react-minimal-pie-chart'
-import { Modal } from 'reactstrap'
 import AvailabilitiesTable from './../resources/availabilities/availabilities'
 import BandsTable from './../resources/bands/bands'
 
@@ -10,6 +10,10 @@ class Home extends React.Component {
     constructor() {
         super();
         this.state = {
+            employee: {},
+            approveList: [],
+            declineList: [],
+            loading: true,
             tableKey: "",
             employeeTable: [],
             availabilityPieData: dataService.getAvailabilityCount(),
@@ -31,6 +35,20 @@ class Home extends React.Component {
             employee,
             loading
         })
+    }
+    markApprove(target) {
+        this.setState({ approveList: [...this.state.approveList, target] });
+    }
+    markDecline(target) {
+        this.setState({ declineList: [...this.state.declineList, target] });
+    }
+    revertMark(target) {
+        this.setState({ approveList: this.state.approveList.filter(approval => (approval.empIndex !== target.empIndex || approval.skillIndex !== target.skillIndex))})
+        this.setState({ declineList: this.state.declineList.filter(declinement => (declinement.empIndex !== target.empIndex || declinement.skillIndex !== target.skillIndex))})
+    }
+    submitMarks() {
+        dataService.updateSkillApprovals(this.state.approveList, this.state.declineList);
+        this.forceUpdate();
     }
 
     availabilitiesTable(event, propsData, index) {
@@ -69,7 +87,7 @@ class Home extends React.Component {
             return <div></div>
         }
         return (
-            <div >
+            <div>
                 <Dashboard />
                 <h4 style = {{width:'95%', padding:'0 2.5% 10pt 2.5%'}}>
                     Resource Informatics Searching and Administration Tool
@@ -81,6 +99,7 @@ class Home extends React.Component {
                     RISAT is a tool that allows IBM employees to search for resources with specific skills, certifications, and experience in industries.
                     The tool has the capability to upload the RCM report to provide additional resource statistics. Blue Page Managers have the capability of reviewing their resources profiles, editing their profiles, and approving their skills.
                 </div>
+                
                 <label style={{width:'45%', float: 'left'}}>
                     <b>Resource Availability:</b>
                 </label>
@@ -105,12 +124,99 @@ class Home extends React.Component {
                     }}
                     onClick={this.bandsTable}
                 />
-                <label style={{width:'45%', textAlign:'center', float: 'left'}}>
+                <label style={{width:'50%', textAlign:'center', float: 'left', margin:'0 0 0 0'}}>
                     {Object.values(this.state.availabilityPieData).map(({title, value, color}, index) => <b key={index} style={{color:color}}>{title} </b>)}
                 </label>
-                <label style={{width:'45%', textAlign:'center', float: 'right'}}>
+                <label style={{width:'50%', textAlign:'center', float: 'right', margin:'0 0 0 0'}}>
                     {Object.values(this.state.bandPieData).map(({title, value, color}, index) => <b key={index} style={{color:color}}>{title} </b>)}
                 </label>
+                
+                <h4 style = {{width:'100%', padding:'200px 2.5% 0 2.5%'}}>
+                    Pending Approvals
+                </h4>
+                <Table id='dataTable' style={{width:'90%'}}>
+                    <thead style={{ fontWeight: 'bold' }}>
+                        <tr>
+                            <td>
+                                Name
+                            </td>
+                            <td>
+                                Band
+                            </td>
+                            <td>
+                                JRSS
+                            </td>
+                            <td>
+                                Manager
+                            </td>
+                            <td>
+                                Skill
+                            </td>
+                            <td>
+                                Skill level
+                            </td>
+                            <td>
+                                Years
+                            </td>
+                            <td>
+                                Status
+                            </td>
+                            <td>
+                                Approved
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.employee ? this.state.employee.employees.map((applyingEmployee, empIndex) => (
+                            applyingEmployee.skills.map((toApprove, skillIndex) => (
+                                <React.Fragment>
+                                    {toApprove.status === 'NOT APPROVED' ?
+                                        <tr key={{empIndex, skillIndex}}>
+                                            <td>
+                                                {applyingEmployee.employee.name}
+                                            </td> 
+                                            <td>
+                                                {applyingEmployee.employee.hrBand}
+                                            </td>
+                                            <td>
+                                                JRSS
+                                            </td>
+                                            <td>
+                                                {toApprove.employee.manager.name}
+                                            </td>
+                                            <td>
+                                                {toApprove.skill.name}
+                                            </td>
+                                            <td>
+                                                {toApprove.level}
+                                            </td>
+                                            <td>
+                                                {toApprove.years}
+                                            </td>
+                                            <td>
+                                                PENDING
+                                            </td>
+                                            <td>
+                                                {this.state.approveList.filter(data => (data.empIndex === empIndex && data.skillIndex === skillIndex)).length ?
+                                                <Button type="button" color="success" onClick={this.revertMark.bind(this, {empIndex, skillIndex})}>Cancel Approval?</Button> : (
+                                                !this.state.declineList.filter(data => (data.empIndex === empIndex && data.skillIndex === skillIndex)).length ? 
+                                                <React.Fragment>
+                                                    <Button type="button" color="primary" onClick={this.markApprove.bind(this, {empIndex, skillIndex})}>Approve</Button>
+                                                    <Button type="button" color="danger" onClick={this.markDecline.bind(this, {empIndex, skillIndex})}>Decline</Button>
+                                                </React.Fragment> :
+                                                <Button type="button" onClick={this.revertMark.bind(this, {empIndex, skillIndex})}>Cancel Declinement?</Button>)}
+                                            </td>
+                                        </tr>
+                                    :
+                                        null
+                                    }
+                                </React.Fragment>
+                            ))
+                        ))
+                        : null}
+                    </tbody>
+                </Table>
+                <Button type="button" color="primary" onClick={this.submitMarks.bind(this)}>Submit</Button>
                 <Modal isOpen={this.state.showAvailability} toggle={this.toggle}>
                     <AvailabilitiesTable tableKey={this.state.tableKey} employeeTable={this.state.employeeTable} toggle={this.toggle} />
                 </Modal>
