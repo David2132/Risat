@@ -1,7 +1,10 @@
 import React from 'react'
 import Dashboard from '../dashboard'
 import dataService from '../../dataService'
-import { Table, Button } from 'reactstrap'
+import { Table, Button, Modal } from 'reactstrap'
+import PieChart from 'react-minimal-pie-chart'
+import AvailabilitiesTable from './../resources/availabilities/availabilities'
+import BandsTable from './../resources/bands/bands'
 
 class Home extends React.Component {
     constructor() {
@@ -10,9 +13,21 @@ class Home extends React.Component {
             employee: {},
             approveList: [],
             declineList: [],
-            loading: true
+            loading: true,
+            tableKey: "",
+            employeeTable: [],
+            availabilityPieData: dataService.getAvailabilityCount(),
+            bandPieData: dataService.getBandsCount(),
+            showAvailability: false,
+            showBands: false,
+            loading: true,
         };
+
+        this.toggle = this.toggle.bind(this);
+        this.bandsTable = this.bandsTable.bind(this);
+        this.availabilitiesTable = this.availabilitiesTable.bind(this);
     }
+
     componentDidMount() {
         const employee = dataService.getEmp().employee;
         const loading = false;
@@ -35,6 +50,37 @@ class Home extends React.Component {
         dataService.updateSkillApprovals(this.state.approveList, this.state.declineList);
         this.forceUpdate();
     }
+
+    availabilitiesTable(event, propsData, index) {
+        this.setState({
+            showAvailability: true,
+            tableKey: propsData[index].title,
+            employeeTable: dataService.getAvailabilityList(propsData[index].title)
+        })
+    }
+
+    bandsTable(event, propsData, index) {
+        this.setState({
+            showBands: true,
+            tableKey: propsData[index].title,
+            employeeTable: dataService.getBandList(propsData[index].title)
+        })
+    }
+
+    toggle() {
+        if (this.state.showAvailability) {
+            this.setState({
+                showAvailability: false
+            })
+
+        }
+        if (this.state.showBands) {
+            this.setState({
+                showBands: false
+            })
+        }
+    }
+
     render() {
         const { employee, loading } = this.state
         if (loading) {
@@ -54,12 +100,41 @@ class Home extends React.Component {
                     The tool has the capability to upload the RCM report to provide additional resource statistics. Blue Page Managers have the capability of reviewing their resources profiles, editing their profiles, and approving their skills.
                 </div>
                 
-                <br></br>
-                <br></br>
-                <h4 style = {{width:'95%', padding:'0 2.5% 10pt 2.5%'}}>
+                <label style={{width:'45%', float: 'left'}}>
+                    <b>Resource Availability:</b>
+                </label>
+                <label style={{width:'45%', float: 'right'}}>
+                    <b>Resource Band Mix:</b>
+                </label>
+                <PieChart
+                    data={this.state.availabilityPieData}
+                    style={{height:'250px', width:'50%', float: 'left'}}
+                    label={({ data, dataIndex }) => Math.round(data[dataIndex].percentage) + '%'}
+                    labelStyle={{
+                        fill: '#121212'
+                    }}
+                    onClick={this.availabilitiesTable}
+                />
+                <PieChart
+                    data={this.state.bandPieData}
+                    style={{height:'250px', width:'50%', float: 'right'}}
+                    label={({ data, dataIndex }) => Math.round(data[dataIndex].percentage) + '%'}
+                    labelStyle={{
+                        fill: '#121212'
+                    }}
+                    onClick={this.bandsTable}
+                />
+                <label style={{width:'50%', textAlign:'center', float: 'left', margin:'0 0 0 0'}}>
+                    {Object.values(this.state.availabilityPieData).map(({title, value, color}, index) => <b key={index} style={{color:color}}>{title} </b>)}
+                </label>
+                <label style={{width:'50%', textAlign:'center', float: 'right', margin:'0 0 0 0'}}>
+                    {Object.values(this.state.bandPieData).map(({title, value, color}, index) => <b key={index} style={{color:color}}>{title} </b>)}
+                </label>
+                
+                <h4 style = {{width:'100%', padding:'200px 5% 0 5%'}}>
                     Pending Approvals
                 </h4>
-                <Table id='dataTable' >
+                <Table id='dataTable' style={{width:'90%'}}>
                     <thead style={{ fontWeight: 'bold' }}>
                         <tr>
                             <td>
@@ -142,6 +217,12 @@ class Home extends React.Component {
                     </tbody>
                 </Table>
                 <Button type="button" color="primary" onClick={this.submitMarks.bind(this)}>Submit</Button>
+                <Modal isOpen={this.state.showAvailability} toggle={this.toggle}>
+                    <AvailabilitiesTable tableKey={this.state.tableKey} employeeTable={this.state.employeeTable} toggle={this.toggle} />
+                </Modal>
+                <Modal isOpen={this.state.showBands} toggle={this.toggle}>
+                    <BandsTable tableKey={this.state.tableKey} employeeTable={this.state.employeeTable} toggle={this.toggle} />
+                </Modal>
             </div>
         )
     }

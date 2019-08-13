@@ -119,7 +119,7 @@ class Skill extends React.Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button type="submit" color="primary">Save</Button>
-                        <Button color="danger"> Delete</Button>
+                        {this.state.isEdit ? <Button color="danger"> Delete</Button> : null }
                         <Button type="button" color="secondary" onClick={this.props.toggle}>Cancel</Button>
                     </ModalFooter>
                 </form>
