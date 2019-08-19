@@ -20,7 +20,6 @@ class Home extends React.Component {
             bandPieData: dataService.getBandsCount(),
             showAvailability: false,
             showBands: false,
-            loading: true,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -43,8 +42,8 @@ class Home extends React.Component {
         this.setState({ declineList: [...this.state.declineList, target] });
     }
     revertMark(target) {
-        this.setState({ approveList: this.state.approveList.filter(approval => (approval.empIndex !== target.empIndex || approval.skillIndex !== target.skillIndex))})
-        this.setState({ declineList: this.state.declineList.filter(declinement => (declinement.empIndex !== target.empIndex || declinement.skillIndex !== target.skillIndex))})
+        this.setState({ approveList: this.state.approveList.filter(approval => (approval.empIndex !== target.empIndex || approval.skillIndex !== target.skillIndex)) })
+        this.setState({ declineList: this.state.declineList.filter(declinement => (declinement.empIndex !== target.empIndex || declinement.skillIndex !== target.skillIndex)) })
     }
     submitMarks() {
         dataService.updateSkillApprovals(this.state.approveList, this.state.declineList);
@@ -66,6 +65,7 @@ class Home extends React.Component {
             employeeTable: dataService.getBandList(propsData[index].title)
         })
     }
+    
 
     toggle() {
         if (this.state.showAvailability) {
@@ -89,138 +89,143 @@ class Home extends React.Component {
         return (
             <div>
                 <Dashboard />
-                <h4 style = {{width:'95%', padding:'0 2.5% 10pt 2.5%'}}>
+                <h4 style={{ width: '95%', padding: '0 2.5% 10pt 2.5%' }}>
                     Resource Informatics Searching and Administration Tool
                 </h4>
-                <div style = {{width:'95%', padding:'0 2.5% 10pt 2.5%'}}>
+                <div style={{ width: '95%', padding: '0 2.5% 10pt 2.5%' }}>
                     Welcome <b>{employee.name}</b>!
                 </div>
-                <div style = {{width:'95%', padding:'0 2.5% 0 2.5%'}}>
+                <div style={{ width: '95%', padding: '0 2.5% 0 2.5%' }}>
                     RISAT is a tool that allows IBM employees to search for resources with specific skills, certifications, and experience in industries.
                     The tool has the capability to upload the RCM report to provide additional resource statistics. Blue Page Managers have the capability of reviewing their resources profiles, editing their profiles, and approving their skills.
                 </div>
-                
-                <label style={{width:'45%', float: 'left'}}>
-                    <b>Resource Availability:</b>
-                </label>
-                <label style={{width:'45%', float: 'right'}}>
-                    <b>Resource Band Mix:</b>
-                </label>
-                <PieChart
-                    data={this.state.availabilityPieData}
-                    style={{height:'250px', width:'50%', float: 'left'}}
-                    label={({ data, dataIndex }) => Math.round(data[dataIndex].percentage) + '%'}
-                    labelStyle={{
-                        fill: '#121212'
-                    }}
-                    onClick={this.availabilitiesTable}
-                />
-                <PieChart
-                    data={this.state.bandPieData}
-                    style={{height:'250px', width:'50%', float: 'right'}}
-                    label={({ data, dataIndex }) => Math.round(data[dataIndex].percentage) + '%'}
-                    labelStyle={{
-                        fill: '#121212'
-                    }}
-                    onClick={this.bandsTable}
-                />
-                <label style={{width:'50%', textAlign:'center', float: 'left', margin:'0 0 0 0'}}>
-                    {Object.values(this.state.availabilityPieData).map(({title, value, color}, index) => <b key={index} style={{color:color}}>{title} </b>)}
-                </label>
-                <label style={{width:'50%', textAlign:'center', float: 'right', margin:'0 0 0 0'}}>
-                    {Object.values(this.state.bandPieData).map(({title, value, color}, index) => <b key={index} style={{color:color}}>{title} </b>)}
-                </label>
-                
-                <h4 style = {{width:'100%', padding:'200px 2.5% 0 2.5%'}}>
-                    Pending Approvals
+                <div style={{ margin: '5% 10% 2% 10%' }}>
+                    <label style={{ width: '45%', textAlign: 'center', float: 'left' }}>
+                        <b>Resource Availability:</b>
+                    </label>
+                    <label style={{ width: '45%', textAlign: 'center', float: 'right' }}>
+                        <b>Resource Band Mix:</b>
+                    </label>
+
+                    <PieChart
+                        data={this.state.availabilityPieData}
+                        style={{ height: '250px', width: '45%', float: 'left' }}
+                        label={({ data, dataIndex }) => Math.round(data[dataIndex].percentage) + '%'}
+                        labelStyle={{
+                            fill: '#121212'
+                        }}
+                        onClick={this.availabilitiesTable}
+                    />
+                    <PieChart
+                        data={this.state.bandPieData}
+                        style={{ height: '250px', width: '45%', float: 'right' }}
+                        label={({ data, dataIndex }) => Math.round(data[dataIndex].percentage) + '%'}
+                        labelStyle={{
+                            fill: '#121212'
+                        }}
+                        onClick={this.bandsTable}
+                    />
+
+                    <label style={{ width: '45%', textAlign: 'center', margin: '0 0 0 0' }}>
+                        {Object.values(this.state.availabilityPieData).map(({ title, value, color }, index) => <b key={index} style={{ color: color }}>{title} </b>)}
+                    </label>
+                    <label style={{ width: '45%', textAlign: 'center', float: 'right', margin: '0 0 0 0' }}>
+                        {Object.values(this.state.bandPieData).map(({ title, value, color }, index) => <b key={index} style={{ color: color }}>{title} </b>)}
+                    </label>
+                </div>
+                <div style ={{margin:'0 0 5% 5%'}}>
+                    <h4 style={{ width: '100%', marginTop: '8%', padding: '0 2.5% 0 2.5%' }}>
+                        Pending Approvals
                 </h4>
-                <Table id='dataTable' style={{width:'90%'}}>
-                    <thead style={{ fontWeight: 'bold' }}>
-                        <tr>
-                            <td>
-                                Name
+                    <Table id='dataTable' style={{ width: '90%', textAlign:'center'}}>
+                        <thead style={{ fontWeight: 'bold' }}>
+                            <tr>
+                                <td>
+                                    Name
                             </td>
-                            <td>
-                                Band
+                                <td>
+                                    Band
                             </td>
-                            <td>
-                                JRSS
+                                <td>
+                                    JRSS
                             </td>
-                            <td>
-                                Manager
+                                <td>
+                                    Manager
                             </td>
-                            <td>
-                                Skill
+                                <td>
+                                    Skill
                             </td>
-                            <td>
-                                Skill level
+                                <td>
+                                    Skill level
                             </td>
-                            <td>
-                                Years
+                                <td>
+                                    Years
                             </td>
-                            <td>
-                                Status
+                                <td>
+                                    Status
                             </td>
-                            <td>
-                                Approved
+                                <td>
+                                    Approved
                             </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.employee ? this.state.employee.employees.map((applyingEmployee, empIndex) => (
-                            applyingEmployee.skills.map((toApprove, skillIndex) => (
-                                <React.Fragment>
-                                    {toApprove.status === 'NOT APPROVED' ?
-                                        <tr key={{empIndex, skillIndex}}>
-                                            <td>
-                                                {applyingEmployee.employee.name}
-                                            </td> 
-                                            <td>
-                                                {applyingEmployee.employee.hrBand}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.employee ? this.state.employee.employees.map((applyingEmployee, empIndex) => (
+                                applyingEmployee.skills.map((toApprove, skillIndex) => (
+                                    <React.Fragment>
+                                        {toApprove.status === 'NOT APPROVED' ?
+                                            <tr key={{ empIndex, skillIndex }}>
+                                                <td>
+                                                    {applyingEmployee.employee.name}
+                                                </td>
+                                                <td>
+                                                    {applyingEmployee.employee.hrBand}
+                                                </td>
+                                                <td>
+                                                    JRSS
                                             </td>
-                                            <td>
-                                                JRSS
+                                                <td>
+                                                    {toApprove.employee.manager.name}
+                                                </td>
+                                                <td>
+                                                    {toApprove.skill.name}
+                                                </td>
+                                                <td>
+                                                    {toApprove.level}
+                                                </td>
+                                                <td>
+                                                    {toApprove.years}
+                                                </td>
+                                                <td>
+                                                    PENDING
                                             </td>
-                                            <td>
-                                                {toApprove.employee.manager.name}
-                                            </td>
-                                            <td>
-                                                {toApprove.skill.name}
-                                            </td>
-                                            <td>
-                                                {toApprove.level}
-                                            </td>
-                                            <td>
-                                                {toApprove.years}
-                                            </td>
-                                            <td>
-                                                PENDING
-                                            </td>
-                                            <td>
-                                                {this.state.approveList.filter(data => (data.empIndex === empIndex && data.skillIndex === skillIndex)).length ?
-                                                <Button type="button" color="success" onClick={this.revertMark.bind(this, {empIndex, skillIndex})}>Cancel Approval?</Button> : (
-                                                !this.state.declineList.filter(data => (data.empIndex === empIndex && data.skillIndex === skillIndex)).length ? 
-                                                <React.Fragment>
-                                                    <Button type="button" color="primary" onClick={this.markApprove.bind(this, {empIndex, skillIndex})}>Approve</Button>
-                                                    <Button type="button" color="danger" onClick={this.markDecline.bind(this, {empIndex, skillIndex})}>Decline</Button>
-                                                </React.Fragment> :
-                                                <Button type="button" onClick={this.revertMark.bind(this, {empIndex, skillIndex})}>Cancel Declinement?</Button>)}
-                                            </td>
-                                        </tr>
-                                    :
-                                        null
-                                    }
-                                </React.Fragment>
+                                                <td>
+                                                    {this.state.approveList.filter(data => (data.empIndex === empIndex && data.skillIndex === skillIndex)).length ?
+                                                        <Button type="button" color="success" onClick={this.revertMark.bind(this, { empIndex, skillIndex })}>Cancel Approval?</Button> : (
+                                                            !this.state.declineList.filter(data => (data.empIndex === empIndex && data.skillIndex === skillIndex)).length ?
+                                                                <React.Fragment>
+                                                                    <Button type="button" color="primary" onClick={this.markApprove.bind(this, { empIndex, skillIndex })}>Approve</Button>
+                                                                    <Button type="button" color="danger" onClick={this.markDecline.bind(this, { empIndex, skillIndex })}>Decline</Button>
+                                                                </React.Fragment> :
+                                                                <Button type="button" onClick={this.revertMark.bind(this, { empIndex, skillIndex })}>Cancel Declinement?</Button>)}
+                                                </td>
+                                            </tr>
+                                            :
+                                            null
+                                        }
+                                    </React.Fragment>
+                                ))
                             ))
-                        ))
-                        : null}
-                    </tbody>
-                </Table>
-                <Button type="button" color="primary" onClick={this.submitMarks.bind(this)}>Submit</Button>
+                                : null}
+                        </tbody>
+                    </Table>
+                    <Button type="button" color="primary" style ={{marginLeft:'80.5%'}}onClick={this.submitMarks.bind(this)}>Submit</Button>
+                </div>
+
                 <Modal isOpen={this.state.showAvailability} toggle={this.toggle}>
                     <AvailabilitiesTable tableKey={this.state.tableKey} employeeTable={this.state.employeeTable} toggle={this.toggle} />
                 </Modal>
-                <Modal isOpen={this.state.showBands} toggle={this.toggle}>
+                <Modal isOpen={this.state.showBands}>
                     <BandsTable tableKey={this.state.tableKey} employeeTable={this.state.employeeTable} toggle={this.toggle} />
                 </Modal>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react'
-import { ModalHeader, ModalBody, ModalFooter, Table } from 'reactstrap'
+import {  ModalHeader,ModalBody, ModalFooter, Table } from 'reactstrap'
+import {  Button } from 'reactstrap'
 
 import './../../../index.css';
 
@@ -20,10 +21,11 @@ class BandsTable extends React.Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <ModalHeader toggle={this.props.toggle} > Resource Bands: {this.props.tableKey} </ModalHeader >
+                <ModalHeader toggle={this.props.toggle} > Resource Bands: {this.props.tableKey} </ModalHeader >
+
                     <ModalBody>
-                        <Table>
-                            <thead style={{ fontWeight: 'bold' }}>
+                        <Table style ={{textAlign:'center'}}>
+                            <thead style={{ fontWeight: 'bold', backgroundColor:'white' }}>
                                 <tr>
                                     <td>
                                         #
@@ -60,6 +62,7 @@ class BandsTable extends React.Component {
                         </Table>
                     </ModalBody>
                     <ModalFooter>
+                        <Button onClick={this.props.toggle}>Close</Button>
                     </ModalFooter>
                 </form>
             </div>
